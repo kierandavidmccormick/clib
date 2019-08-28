@@ -4,30 +4,19 @@
 void bubbleSortGen(void *list[], int size, int(*comparator)(void *, void *));
 int compareInt(int *a, int *b);
 void swap(void **a, void **b);
+void printList(void *list[]);
 
-struct blah {
-	char junk[6];
-	int val;
-};
-
-void printList(void *list[]) {
-	for (int i = 0; i < 5; i++) {
-		printf("%d, ", (*(struct blah *)list[i]).val);
-	}
-}
 
 int main(int argc, char *argv[]) {
-	int numArray[] = {3, 1, 23945, 0, -3};
-	struct blah structArray[] = {{"AAAAA", 3}, {"AAAAA", 1}, {"AAAAA", 23945}, {"AAAAA", 0}, {"AAAAA", -3}};
-	void *list[] = {(void *)&structArray[0], (void *)&structArray[1], (void *)&structArray[2], (void *)&structArray[3], (void *)&structArray[4]};
-	//bubbleSortGen(list, 4, (int (*)(void *, void *)(compareInt)));
-	int (*compPtr)(void *, void *) = &compareInt;
-	bubbleSortGen(list, 5, (int (*)(void *, void *))compPtr);
-	printList(list);
-	printf("\n");
+	//for sorting
+	//int numArray[] = {3, 1, 23945, 0, -3};
+	//void *list[] = {(void *)&numArray[0], (void *)&numArray[1], (void *)&numArray[2], (void *)&numArray[3], (void *)&numArray[4]};
+	//int (*compPtr)(void *, void *) = &compareInt;
+	//bubbleSortGen(list, 5, (int (*)(void *, void *))compPtr);
+	//printList(list);
+	//printf("\n");
 	return 0;
 }
-
 
 //performs bubbleSort on generic array, using generic comparator
 //takes in array of pointers to elements, array size, and pointer to comparator function
@@ -64,4 +53,10 @@ void swap(void **a, void **b) {
 	temp = *a;
 	*a = *b;
 	*b = temp;
+}
+
+void printList(void *list[]) {
+	for (int i = 0; i < 5; i++) {
+		printf("%d, ", (*(struct blah *)list[i]).val);
+	}
 }
