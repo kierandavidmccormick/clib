@@ -6,6 +6,100 @@ int compareInt(int *a, int *b);
 void swap(void **a, void **b);
 void printList(void *list[]);
 
+typedef struct linkedListElement {
+	struct ll_element *next;
+	void *value;
+} ll_element;
+
+typedef struct linkedListHead {
+	int size;
+	struct ll_element *first;
+	struct ll_element *last;
+} ll_head;
+
+//creates a new linked list in memory; make sure to free before termination
+ll_head *ll_create() {
+	ll_head *list = malloc(sizeof(ll_head));
+	list.size = 0;
+	list.first = 0;
+	list.last = 0;
+	return list;
+}
+
+ll_element *ll_getIndex(int index, ll_head *head) {
+	if (index < 0 || index > head->size - 1) {
+		return 0;
+	}
+	ll_element *elementptr = head->first;
+	for (int i = 0; i < index; i++) {
+		elementptr = elementptr->next;
+	}
+	return elementptr;
+}
+
+ll_element **ll_getPrevPtr(int index, ll_head *head) {
+	if (index < 0 || index > head->size) {
+		return 0;
+	}
+	ll_element **elementptr = &(head->first);
+	for (int i = 0; i =< index; i++) {
+		elementptr = &((**elementptr).next);		//can be -> ?
+	}
+	return elementptr;
+}
+
+void ll_destroy(ll_head *head) {
+	while(size > 0) {
+		ll_removeElement(0, head);
+	}
+	free(*head);
+}
+
+int ll_addElement(void *element, ll_head *head) {
+	return ll_addElement(element, 0, head);
+}
+
+int ll_addElement(void *element, int index, ll_head *head) {
+	ll_element **prevptr = ll_getPrevPtr(index, head);
+	if (prevptr == 0) {
+		return 1;
+	}
+	ll_element *nextptr = *prevptr != 0 ? (**prevptr) : 0;
+
+	ll_element *newElement = malloc(sizeof(ll_element));
+	newElement->next = nextptr;
+	newElement->value = value;
+	*prevptr = newElement;
+
+	head->size--;
+	return 0;
+}
+
+//TODO: deallocate element contents as well; how to do with nested lists
+//solution: supply a pointer to a destructor function that takes a void * pointing to the relevant object and destroys it as necessary; add to the whole list
+int ll_removeElement(int index, ll_head *head) {
+	ll_element **prevptr = ll_getPrevPtr(index, head);
+	if (prevptr == 0) {
+		return 1;
+	}
+	ll_element *nextptr = *prevptr != 0 ? (**prevptr).next : 0;
+	free (**prevptr)
+	*prevptr = nextptr;
+	head->size--;
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
 	//for sorting
