@@ -15,11 +15,12 @@ typedef struct linkedListHead {
 } ll_head;
 
 //TODO: make things that need to be static or private static or private
+//TODO: get my debug lib, use
 
 void bubbleSortGen(void *list[], int size, int(*comparator)(void *, void *));
 int compareInt(int *a, int *b);
 void swap(void **a, void **b);
-void printList(void *list[]);
+void printList(ll_head *list);
 ll_head *ll_create(void (*dealloc)(void *));
 ll_element *ll_getIndex(int index, ll_head *head);
 ll_element **ll_getPrevPtr(int index, ll_head *head);
@@ -49,14 +50,14 @@ ll_element *ll_getIndex(int index, ll_head *head) {
 	return elementptr;
 }
 
-//returns pointer of previous element (or head)
+//returns pointer of previous element to element at index (or head)
 ll_element **ll_getPrevPtr(int index, ll_head *head) {
 	if (index < 0 || index > head->size) {
-		return 0;
+		return NULL;
 	}
 	ll_element **elementptr = &(head->first);
-	for (int i = 0; i <= index; i++) {
-		elementptr = &((**elementptr).next);		//can be -> ?
+	for (int i = 1; i <= index; i++) {
+		elementptr = &((*elementptr)->next);
 	}
 	return elementptr;
 }
@@ -72,17 +73,17 @@ void ll_destroy(ll_head *head) {
 //creates new entry from pointer and adds to list
 int ll_addElement(void *element, int index, ll_head *head) {
 	ll_element **prevptr = ll_getPrevPtr(index, head);
-	if (prevptr == 0) {
+	if (prevptr == NULL) {
 		return 1;
 	}
-	ll_element *nextptr = *prevptr != 0 ? (*prevptr)->next : NULL;
 
+	ll_element *nextptr = *prevptr != NULL ? (*prevptr) : NULL;
 	ll_element *newElement = malloc(sizeof(ll_element));
 	newElement->next = nextptr;
 	newElement->value = element;
 	*prevptr = newElement;
 
-	head->size--;
+	head->size++;
 	return 0;
 }
 
@@ -92,8 +93,9 @@ int ll_removeElement(int index, ll_head *head) {
 	if (prevptr == NULL) {
 		return 1;
 	}
-	ll_element *nextptr = *prevptr != 0 ? (**prevptr).next : NULL;
+	ll_element *nextptr = *prevptr != NULL ? (**prevptr).next : NULL;
 	ll_element *delptr = &(**prevptr);
+	//printf("Freed element\n");
 	head->dealloc(delptr->value);
 	free (delptr);
 	*prevptr = nextptr;
@@ -107,7 +109,7 @@ void *getElement(int index, ll_head *head) {
 
 //destroys a linked list stored in another data structure
 void llRecDestructor(void *target) {
-	ll_destroy((ll_head *) target);
+	ll_destroy((ll_head *)target);
 }
 
 //destroys a basic object (struct, primitive, etc) stored in a data structure
@@ -118,6 +120,16 @@ void basicDestructor(void *target) {
 //used when a destructor is needed but the contents do not need to be destroyed (are in stack, destroyed elsewhere, etc)
 void stubDestructor(void *target) {
 	//do nothing
+}
+
+void printList(ll_head *list) {
+	ll_element *elemptr = list->first;
+	printf("\nList contents:   ");
+	while (elemptr != NULL) {
+		printf("%d ", *(int *)(elemptr->value));
+		elemptr = elemptr->next;
+	}
+	printf("\n");
 }
 
 
@@ -140,6 +152,7 @@ int main(int argc, char *argv[]) {
 	//bubbleSortGen(list, 5, (int (*)(void *, void *))compPtr);
 	//printList(list);
 	//printf("\n");
+
 	int a = 1;
 	int b = 2;
 	int c = 3;
@@ -147,11 +160,35 @@ int main(int argc, char *argv[]) {
 	int e = 5;
 
 	ll_head *head = ll_create(&stubDestructor);
+
 	ll_addElement((void *)&a, 0, head);
-	ll_addElement((void *)&b, 0, head);
+	ll_addElement((void *)&b, 1, head);
 	ll_addElement((void *)&c, 0, head);
-	ll_addElement((void *)&d, 0, head);
-	ll_addElement((void *)&e, 0, head);
+	ll_addElement((void *)&d, 2, head);
+	ll_addElement((void *)&e, 1, head);
+
+	printf("\nGet Test: 3\\%d, 1\\%d, 2\\%d", *(int *)ll_getIndex(0, head)->value, *(int *)ll_getIndex(2, head)->value, *(int *)ll_getIndex(4, head)->value);
+
+	printf("\nlist size %d\n", head->size);
+
+	printList(head);
+
+	ll_removeElement(0, head);
+	ll_removeElement(3, head);
+	ll_removeElement(1, head);
+
+	printf("\nlist size %d\n", head->size);
+
+	printList(head);
+
+	ll_removeElement(1, head);
+	ll_removeElement(0, head);
+
+	printf("\nlist size %d\n", head->size);
+
+	printList(head);
+
+	ll_destroy(head);
 
 	return 0;
 }
