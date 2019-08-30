@@ -122,17 +122,6 @@ void stubDestructor(void *target) {
 	//do nothing
 }
 
-void printList(ll_head *list) {
-	ll_element *elemptr = list->first;
-	printf("\nList contents:   ");
-	while (elemptr != NULL) {
-		printf("%d ", *(int *)(elemptr->value));
-		elemptr = elemptr->next;
-	}
-	printf("\n");
-}
-
-
 
 
 
@@ -156,39 +145,38 @@ int main(int argc, char *argv[]) {
 	int a = 1;
 	int b = 2;
 	int c = 3;
+
+	ll_head *head1 = ll_create(&stubDestructor);
+
+	ll_addElement((void *)&a, 0, head1);
+	ll_addElement((void *)&b, 1, head1);
+	ll_addElement((void *)&c, 0, head1);
+
 	int d = 4;
 	int e = 5;
 
-	ll_head *head = ll_create(&stubDestructor);
+	ll_head *head2 = ll_create(&stubDestructor);
 
-	ll_addElement((void *)&a, 0, head);
-	ll_addElement((void *)&b, 1, head);
-	ll_addElement((void *)&c, 0, head);
-	ll_addElement((void *)&d, 2, head);
-	ll_addElement((void *)&e, 1, head);
+	ll_addElement((void *)&d, 0, head2);
+	ll_addElement((void *)&e, 1, head2);
 
-	printf("\nGet Test: 3\\%d, 1\\%d, 2\\%d", *(int *)ll_getIndex(0, head)->value, *(int *)ll_getIndex(2, head)->value, *(int *)ll_getIndex(4, head)->value);
+	int *f = malloc(sizeof(int));
+	*f = 6;
+	int *g = malloc(sizeof(int));
+	*g = 7;
 
-	printf("\nlist size %d\n", head->size);
+	ll_head *head3 = ll_create(&basicDestructor);
 
-	printList(head);
+	ll_addElement((void *)f, 0, head3);
+	ll_addElement((void *)g, 1, head3);
 
-	ll_removeElement(0, head);
-	ll_removeElement(3, head);
-	ll_removeElement(1, head);
+	ll_head *head0 = ll_create(&llRecDestructor);
 
-	printf("\nlist size %d\n", head->size);
+	ll_addElement((void *) head1, 0, head0);
+	ll_addElement((void *) head2, 0, head0);
+	ll_addElement((void *) head3, 0, head0);
 
-	printList(head);
-
-	ll_removeElement(1, head);
-	ll_removeElement(0, head);
-
-	printf("\nlist size %d\n", head->size);
-
-	printList(head);
-
-	ll_destroy(head);
+	ll_destroy(head0);
 
 	return 0;
 }
