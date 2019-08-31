@@ -2,6 +2,71 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct 
+
+
+
+
+
+
+
+
+
+
+
+
+int main(int argc, char *argv[]) {
+	//for sorting
+	//int numArray[] = {3, 1, 23945, 0, -3};
+	//void *list[] = {(void *)&numArray[0], (void *)&numArray[1], (void *)&numArray[2], (void *)&numArray[3], (void *)&numArray[4]};
+	//int (*compPtr)(void *, void *) = &compareInt;
+	//bubbleSortGen(list, 5, (int (*)(void *, void *))compPtr);
+	//printList(list);
+	//printf("\n");
+
+	/*
+	int a = 1;
+	int b = 2;
+	int c = 3;
+
+	ll_head *head1 = ll_create(&stubDestructor);
+
+	ll_addElement((void *)&a, 0, head1);
+	ll_addElement((void *)&b, 1, head1);
+	ll_addElement((void *)&c, 0, head1);
+
+	int d = 4;
+	int e = 5;
+
+	ll_head *head2 = ll_create(&stubDestructor);
+
+	ll_addElement((void *)&d, 0, head2);
+	ll_addElement((void *)&e, 1, head2);
+
+	int *f = malloc(sizeof(int));
+	*f = 6;
+	int *g = malloc(sizeof(int));
+	*g = 7;
+
+	ll_head *head3 = ll_create(&basicDestructor);
+
+	ll_addElement((void *)f, 0, head3);
+	ll_addElement((void *)g, 1, head3);
+
+	ll_head *head0 = ll_create(&llRecDestructor);
+
+	ll_addElement((void *) head1, 0, head0);
+	ll_addElement((void *) head2, 0, head0);
+	ll_addElement((void *) head3, 0, head0);
+
+	ll_destroy(head0);
+	*/
+
+
+
+	return 0;
+}
+
 typedef struct linkedListElement {
 	struct linkedListElement *next;
 	void *value;
@@ -120,65 +185,6 @@ void basicDestructor(void *target) {
 //used when a destructor is needed but the contents do not need to be destroyed (are in stack, destroyed elsewhere, etc)
 void stubDestructor(void *target) {
 	//do nothing
-}
-
-
-
-
-
-
-
-
-
-
-
-
-int main(int argc, char *argv[]) {
-	//for sorting
-	//int numArray[] = {3, 1, 23945, 0, -3};
-	//void *list[] = {(void *)&numArray[0], (void *)&numArray[1], (void *)&numArray[2], (void *)&numArray[3], (void *)&numArray[4]};
-	//int (*compPtr)(void *, void *) = &compareInt;
-	//bubbleSortGen(list, 5, (int (*)(void *, void *))compPtr);
-	//printList(list);
-	//printf("\n");
-
-	int a = 1;
-	int b = 2;
-	int c = 3;
-
-	ll_head *head1 = ll_create(&stubDestructor);
-
-	ll_addElement((void *)&a, 0, head1);
-	ll_addElement((void *)&b, 1, head1);
-	ll_addElement((void *)&c, 0, head1);
-
-	int d = 4;
-	int e = 5;
-
-	ll_head *head2 = ll_create(&stubDestructor);
-
-	ll_addElement((void *)&d, 0, head2);
-	ll_addElement((void *)&e, 1, head2);
-
-	int *f = malloc(sizeof(int));
-	*f = 6;
-	int *g = malloc(sizeof(int));
-	*g = 7;
-
-	ll_head *head3 = ll_create(&basicDestructor);
-
-	ll_addElement((void *)f, 0, head3);
-	ll_addElement((void *)g, 1, head3);
-
-	ll_head *head0 = ll_create(&llRecDestructor);
-
-	ll_addElement((void *) head1, 0, head0);
-	ll_addElement((void *) head2, 0, head0);
-	ll_addElement((void *) head3, 0, head0);
-
-	ll_destroy(head0);
-
-	return 0;
 }
 
 //performs bubbleSort on generic array, using generic comparator
