@@ -93,6 +93,7 @@ int al_remove(int index, al_head *head) {
 	if (index < 0 || index >= head->size) {
 		return 1;
 	}
+	head->dealloc(head->arrptr[index]);
 	al_handleShift(head->size - 1, index, false, head);
 	head->size--;
 	return 0;
